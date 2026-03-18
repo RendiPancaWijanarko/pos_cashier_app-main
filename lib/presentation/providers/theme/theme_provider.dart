@@ -1,0 +1,26 @@
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../core/constants/constants.dart';
+import '../../../core/themes/app_theme.dart';
+
+class ThemeProvider extends ChangeNotifier {
+  final SharedPreferences _sharedPreferences;
+
+  ThemeProvider(this._sharedPreferences);
+
+  ThemeData get theme {
+    // This app uses only light theme for the orange design system
+    return AppTheme().init();
+  }
+
+  void changeBrightness(bool isLight) async {
+    await _sharedPreferences.setString(
+      Constants.selectedBrightnessKey,
+      isLight ? 'light' : 'dark',
+    );
+    notifyListeners();
+  }
+
+  bool isLight() => theme.brightness == Brightness.light;
+}
